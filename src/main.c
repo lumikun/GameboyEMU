@@ -1,5 +1,7 @@
-#include "SDL.h"
+#include <SDL2/SDL.h>
 #include <stdlib.h>
+
+// TODO Vajag saorganizēt un notestēt meson ar SDL autobuild.
 
 int main(int argc, char **argv)
 {
