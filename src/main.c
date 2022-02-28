@@ -16,15 +16,15 @@ int main(int argc, char **argv)
     }
 
     if (SDL_CreateWindowAndRenderer(320, 240, SDL_WINDOW_RESIZABLE, &window, &renderer)) {
-        SDL_LogError(SDL_LOG_CATEGORY_APPLICATON, "Couldn't create window and renderer: %s", SDL_GetError());
+        SDL_LogError(SDL_LOG_CATEGORY_APPLICATION, "Couldn't create window and renderer: %s", SDL_GetError());
         exit(EXIT_FAILURE);
     }
 
     while (1) {
         SDL_PollEvent(&event);
-        if (event.type == SDL_QUIT)
+        if (event->type == SDL_QUIT)
             break;
-        SDL_SetRendererDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
+        SDL_SetRenderDrawColor(renderer, 0x00, 0x00, 0x00, 0x00);
         SDL_RenderClear(renderer);
         SDL_RenderPresent(renderer);
     }
