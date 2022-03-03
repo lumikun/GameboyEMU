@@ -4,11 +4,21 @@ Prakses projekts, priekš kursa PT2 Gameboy Emulātora izstrāde.
 
 Plāns ir izmantot `C/C++` un `meson` sistēmu, kā arī populāro bibliotēku `SDL2`
 
-Palaišana:
+Palaišana `Linux/Mac OS`:
 ```sh
-meson build && cd builddir && ninja
-./gameboyemu -h
+meson build && cd build && ninja
+./gbemu -h
 ```
+Palaišana `Windows`:
+```cmd
+mkdir subprojects
+meson wrap install sdl2
+meson build
+cd build
+ninja
+./gbemu.exe -h
+```
+Priekš `Windows` sistēmām izmantots [`Visual Studio Community 2019`](https://visualstudio.microsoft.com/downloads/) `x64 Native Tools Comand Prompt for VS 2019`.
 
 # Izmantotā informācīja priekš Izstrādes.
 -   Informācīja par [Memory Map](http://gameboy.mongenel.com/dmg/asmmemmap.html)
@@ -19,3 +29,4 @@ meson build && cd builddir && ninja
 # Izmantotā programatūra.
 -   Bibleotēka [SDL2](https://www.libsdl.org/download-2.0.php).
 -   [Meson](https://mesonbuild.com/) veidošanas sistēma.
+-   [VS2019](https://visualstudio.microsoft.com/) MSVC Kompilātors.
