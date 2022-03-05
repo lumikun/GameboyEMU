@@ -1,59 +1,55 @@
-#include <SDL2/SDL.h>
 #include <stdio.h>
-#include <stdlib.h>
+#include "include.h"
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_ttf.h>
+
+static emu_context ctx;
 
 int main()
 {
-	if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-		fprintf(stderr, "SDL_Init Error: %s\n", SDL_GetError());
-		return EXIT_FAILURE;
+	if (argc < 2) {
+		printf("Err: gbemu <rom_file>\n");
+		return -1;
 	}
 
-	SDL_Window* win = SDL_CreateWindow("Hello World!", 100, 100, 620, 387, SDL_WINDOW_SHOWN);
-	if (win == NULL) {
-		fprintf(stderr, "SDL_CreateWindow Error: %s\n", SDL_GetError());
-		return EXIT_FAILURE;
+	if (!cart_load(argv[1])) {
+		printf("Err: Neizdevas ieladet ROM failu. %s\n", argv[1]);
+		return -2;
 	}
 
-	SDL_Renderer* ren = SDL_CreateRenderer(win, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-	if (ren == NULL) {
-		fprintf(stderr, "SDL_CreateRenderer Error: %s\n", SDL_GetError());
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return EXIT_FAILURE;
+	printf("Kartridza ieladeta...\n");
+	
+	SDL_Init(SDL_INIT_VIDEO);
+	printf("SDL INIT...\n");
+	TTF_Init();
+	printf("TTF INIT...\n");
+
+	cpu_init();
+
+	ctx.running = true;
+	ctx.paused = false;
+	ctx.ticks = 0;
+
+	while(ctx.running) {
+		if (ctx.paused) {
+			delay(10);
+			continue;
+		}
+
+		if (!cpu_step()) {
+			printf("Err: CPU apstajies...\n");
+			return -3;
+		}
+
+		ctx.ticks++;
 	}
+	return 0;
+}
 
-	SDL_Surface* bmp = SDL_LoadBMP("../img/grumpy-cat.bmp");
-	if (bmp == NULL) {
-		fprintf(stderr, "SDL_LoadBMP Error: %s\n", SDL_GetError());
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return EXIT_FAILURE;
-	}
+void delay(u32 ms) {
+	SDL_Delay(ms);
+}
 
-	SDL_Texture* tex = SDL_CreateTextureFromSurface(ren, bmp);
-	if (tex == NULL) {
-		fprintf(stderr, "SDL_CreateTextureFromSurface Error: %s\n", SDL_GetError());
-		SDL_FreeSurface(bmp);
-		SDL_DestroyRenderer(ren);
-		SDL_DestroyWindow(win);
-		SDL_Quit();
-		return EXIT_FAILURE;
-	}
-	SDL_FreeSurface(bmp);
-
-	for (int i = 0; i < 20; i++) {
-		SDL_RenderClear(ren);
-		SDL_RenderCopy(ren, tex, NULL, NULL);
-		SDL_RenderPresent(ren);
-		SDL_Delay(100);
-	}
-
-	SDL_DestroyTexture(tex);
-	SDL_DestroyRenderer(ren);
-	SDL_DestroyWindow(win);
-	SDL_Quit();
-
-	exit(EXIT_SUCCESS);
+emu_context *emu_get_context() {
+	return &ctx;
 }
