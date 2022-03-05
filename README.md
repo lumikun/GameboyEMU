@@ -20,6 +20,12 @@ ninja
 ```
 Priekš `Windows` sistēmām izmantots [`Visual Studio Community 2019`](https://visualstudio.microsoft.com/downloads/) `x64 Native Tools Comand Prompt for VS 2019`.
 
+# Plāns
+-   Izveidot primitivue sistēmu kas var ielādēt ROM failus.
+-   Izveidot pamata emulātoru.
+-   Izveidot emulātorām `upscale` funkcionalitāti.
+-   Izveidot konfigurācījas sistēmu.
+
 # Izmantotā informācīja priekš Izstrādes.
 -   Informācīja par [Memory Map](http://gameboy.mongenel.com/dmg/asmmemmap.html)
 -   Tehniskā dokumentācija [gbdev.io](https://gbdev.io/pandocs/)
