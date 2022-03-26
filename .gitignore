@@ -54,3 +54,7 @@ dkms.conf
 # Folders 
 build/*
 subprojects/*
+ROMS/*
+
+# Random files
+.DS_Store

@@ -21,8 +21,8 @@ ninja
 Priekš `Windows` sistēmām izmantots [`Visual Studio Community 2019`](https://visualstudio.microsoft.com/downloads/) `x64 Native Tools Comand Prompt for VS 2019`.
 
 # Plāns
--   Izveidot primitivue sistēmu kas var ielādēt ROM failus.
--   Izveidot pamata emulātoru.
+-   Izveidot primitivue sistēmu kas var ielādēt ROM failus. _IZDARITS_
+-   Izveidot pamata emulātoru. _SAKTS_
 -   Izveidot emulātorām `upscale` funkcionalitāti.
 -   Izveidot konfigurācījas sistēmu.
 

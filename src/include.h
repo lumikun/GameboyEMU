@@ -1,6 +1,10 @@
 #pragma once
 
+#include <stdio.h>
+#include "util.h"
 #include "cart.h"
+#include "cpu.h"
+
 
 typedef struct {
     bool paused;
@@ -10,3 +14,4 @@ typedef struct {
 
 void delay(u32 ms);
 emu_context *emu_get_context();
+void emu_cycles(int cpu_cycles);

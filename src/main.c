@@ -1,11 +1,10 @@
-#include <stdio.h>
 #include "include.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
 static emu_context ctx;
 
-int main()
+int main(int argc, char **argv)
 {
 	if (argc < 2) {
 		printf("Err: gbemu <rom_file>\n");
@@ -52,4 +51,9 @@ void delay(u32 ms) {
 
 emu_context *emu_get_context() {
 	return &ctx;
+}
+
+void emu_cycles(int cpu_cycles)
+{
+	// TODO ...
 }

@@ -20,3 +20,5 @@ typedef struct {
 } rom_header;
 
 bool cart_load(char *cart);
+u8 cart_read(u16 addr);
+void cart_write(u16 adrr, u8 value);

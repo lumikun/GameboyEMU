@@ -1,8 +1,8 @@
 project('gameboyemu', 'c',
                       license : 'GPL3.0',
-                      default_options : ['c_std=c11', 'optimization=2', 'warning_level=2', 'default_library=static'])
+                      default_options : ['c_std=C11', 'optimization=2', 'warning_level=1', 'default_library=static'])
 
-deps = [dependency('sdl2')]
+deps = [dependency('sdl2'), dependency('sdl2_ttf')]
 
 progname = 'gbemu'
 

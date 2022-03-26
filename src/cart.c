@@ -129,7 +129,7 @@ const char *cart_type_name()
 
 bool cart_load(char *cart) 
 {
-    snprintf(ctx.filename, sizeof(ctx.fn), "%s", cart);
+    snprintf(ctx.fn, sizeof(ctx.fn), "%s", cart);
 
     FILE *fp = fopen(cart, "r");
 
@@ -168,4 +168,14 @@ bool cart_load(char *cart)
     printf("\t Ceksumma : %2.2X (%s)\n", ctx.header->checksum, (x & 0xFF) ? "OK" : "NAV OK");
 
     return true;
+}
+
+u8 cart_read(u16 addr)
+{
+    return ctx.rom_data[addr];
+}
+
+void cart_write(u16 addr, u8 value)
+{
+    NO_IMPL
 }
