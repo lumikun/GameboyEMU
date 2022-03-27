@@ -20,14 +20,30 @@ u8 bus_read(u16 addr)
     if (addr < 0x8000) {
         return cart_read(addr);
     }
-    NO_IMPL
+    printf("Err... Neatbalstts bus_read(%04X)\n", addr);
+    //NO_IMPL
 }
 
-void bus_write(u16 addr, u8 value)
+void bus_write(u16 addr, u8 val)
 {
     if (addr < 0x8000) {
-        cart_write(addr, value);
+        cart_write(addr, val);
         return;
     }
-    NO_IMPL
+    printf("Err... Neatbalstits bus_write(%04X)\n", addr);
+    //NO_IMPL
+}
+
+u16 bus_read16(u16 addr)
+{
+    u16 lo = bus_read(addr);
+    u16 hi = bus_read(addr + 1);
+
+    return lo | (hi << 8);
+}
+
+void bus_write16(u16 addr, u16 val)
+{
+    bus_write(addr + 1, (val >> 8) & 0xFF);
+    bus_write(addr, val & 0xFF);
 }

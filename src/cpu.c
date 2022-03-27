@@ -18,6 +18,7 @@ static void cpu_fetch_inst()
     ctx.cur_inst = instruction_by_opcode(ctx.cur_opcode);
 }
 
+/*
 static void cpu_fetch_data()
 {
     ctx.mem_dest = 0;
@@ -55,6 +56,7 @@ static void cpu_fetch_data()
             return;
     }
 }
+*/
 
 static void cpu_execute()
 {
