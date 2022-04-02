@@ -1,0 +1,133 @@
+#+TITLE: Notes on Gameboy emulation
+#+AUTHOR: Maris Muiznieks
+#+EMAIL: maris.muiznieks@lumi.moe
+#+OPTIONS: toc:nil
+#+TOC: headline 3
+
+* Table of Contents :TOC:
+- [[#emulation][Emulation..]]
+  - [[#what-is-emulation][What is Emulation?]]
+  - [[#video-game-emulation][Video game emulation?]]
+  - [[#hardware-emulation][Hardware emulation?]]
+  - [[#more-info][More info.]]
+- [[#structure-and-organization-of-emulators][Structure and organization of Emulators.]]
+  - [[#memory-subsystem][Memory subsystem]]
+  - [[#cpu-simulator][CPU Simulator]]
+  - [[#io][I/O]]
+- [[#applications][Applications]]
+  - [[#in-preservation][In preservation]]
+  - [[#in-new-media-art][In new media Art]]
+  - [[#in-future-systems-design][In future systems design]]
+- [[#comparison-with-simulation][Comparison with simulation]]
+
+* Emulation..
+** What is Emulation?
+In computing, an *emulator* is hardware or software that enables one computer system to behave like another computer system. An emulator typically enables the host system to run software or use peripheral devices designed for the guest system. Emulation refers to the abillity of a computer program in an electronic device to emulate another program or device.
+Many printers, for example are designed to emulate HP LaserJet printers because so much software is weritten for HP printers. If a non-HP printer emulates an HP printer, any software written for a real HP printer will also run in the non-HP printer emulation and produce equivalent printing.
+** Video game emulation?
+Since at least the 1990's, many video game enthusiasts and hobbyists have used emulators to play classic arcade games from the 1980's using the games original 1980's machine code and data, which is interpreted by a current-era system, and to emulate old video game consoles. Notable systems are NES, SNES, Sega Genessis and Gameboy systems that are often emulated, and used to play various classic Video games such as (Super Mario, Sonic, Zelda, Castlevania, etc.).
+** Hardware emulation?
+A hardware emulator is an emulator which takes the form of a hardware device. Examples include the *DOS-compatible* card installed in some 1990's-era Macintosh computers, such as the Centris 610 or Performa 630, that allowed them to run PC software programs and *FPGA-bassed* hardware emulators. The Church-Turing thesis implies that (theoretically) any operating envidonment can be emulated within any other environment (assuming memory limitations are ignored.) However, in practice, it can e quite difficult, particularly when the exact behavior of the system to be emulated is not documented and has to be deduced through reverse engineering. It also says nothing about timing constraints; if the emulator does not perform as quickly as it did using the original hardware, the software inside the emulation may run much more slowly.
+** More info.
+Most emulators just emulate a hardware architecture - if operating system firmware or software is required for the desired software, it must be provided was well (and may itself be emulated). Both the OS and the software will then be interpreted by the emulator, rather than being run by native hardware. Apart from the interpreter for the emulated binary machine's language, some other hardware (such as input or output devices)
+must be provided in virtual from as well; for example, if writing to a specific memory location should influence what is displayed on the screen, then this would need to be emulated. While emulation could, if take to the extreme, go down to the atomic level, basing its output on a simulation of the actual circuitry from a virtual power source, this would be a highly unusual solution. Emulators typically stop at a simulation of the documented hardware specifications and digital logic. Sufficient emulation of some hardware platform requires extreme accuracy, down to the level of individual clock cycles, undocumented features, unpredictable analog elements, and implementation bugs. This is particularly the case with classic home computers such as the *Commodore 64*, whose software often depends on highly sophisticated low-level programming tricks invented by game programmers and the "demoscene".
+In contrast, some other platforms have had very little use of direct hardware addressing, such as an emulator for the *PlayStation 4*. In these cases, a simple compatibility layer may suffice. This translates system calls for the foreign system into system calls for the host system. I.E. The Linux compatibility layer used on *BSD* to run closed source Linux native software on *FreeBSD*, *NetBSD* and *OpenBSD*. For example, while the *Nintendo 64* graphics processor was fully programmable, most games used one of a few pre-made programs, which were mostly self-contained and communicated with the game via *FIFO*; therefor, many emulators do not emulate the graphics processsor at all, but simply interpret the commands recived from the CPU as the original program would. Developers of software for embedded systems or video game consoles often produced and tested before the final hardware exists in large quantities, so that it can be tested without taking the time to copy the program to be debugged at a low level and without introducing the side effects of a debugger. In many cases, the simulator is actually produced by the company providing the hardware, which theoretically increases its accuracy. Math co-processor emulators allow programs compiled with math instructions to run on machiones that don't have the co-processor installed, but the extra work done by the CPU may slow the system down. If a math coprocessor isn't installed or present on the CPU, when the CPU executes any co-processor instruction ir will make a determined interrupt, calling the math emulator routines. When the instruction is successfully emulated, the program continues executing.
+*** Logic simulatores
+Logic simulation is the use of a computer program to simulate the operation of a digital circuit such as a processor. This is done after a digital circuit has been designed in logic equations, but before the circuit is fabricated in hardware.
+*** Functional Emulators
+Functional esimulation is the use of a computer program to simulate the execution of a second computer program written in symbolc assembly language or compiler language, rather than in binary machine code. By using a functional simulator, programmers can execute and trace selected sections of source code to search for programming errors (bugs), without generating binary code. This is distinct from simulating execution of binary code, which is software emulation. The first functional simulator was written by *Autonetics* in 1960 for testing assembly language programs for later execution in military computer *D-17B*. This made it possible for flight programs to be written, executed, and tested before *D-17B* computer hardware had been built. Autonetics also programmed a functional simulator for testing flight programs for later execution in the military computer *D-37C*.
+*** Video game console emulators
+Video game console emulators are programs that allow a personal computer or video game console to emulate another video game console. They are most often used to play older 1980s to 2000s-era video games on modern personal computers and more contemporary video game consoles. They are also uysed to translate games into other languages, to modify existing games, and in the development process of "home brew" DIY demos and in the creation of new games for older systems. The internet has helped in the spread of console emulators, as most - if not all - would be unavailable for sale in retail outlets. Examples of console emulators that have been released in the last few decades are *RPCS3*, *Dolphin*, *Cemu*, *PCSX2*, *PPSSPP*, *ZSNES*, *Citra*, *ePSXe*, *Project64*, *mGBA*, *Visual Boy Advance* and *Yuzu*.
+Due to their popularity, emulators have been impersonated by malware. Most of these emulators are for video game consoles like the *Xbox 460*, *Xbox One*, *Nintendo 3DS*, etc.
+Generaly such emulators make currently impossible claims such as being able to run *Xbox One* and *Xbox 360* games in a single program.
+*** Terminal Emulators
+Terminal emulators are software programs that provide modern computers and devices interactive access to applications running on mainframe computer operating systems or other host systems such as *HP-UX* or *OpenVMS*. Terminals such as the *IBM 3270* or *VT100* and many others are no longer produced as physical devices. Instead, software running on modern ooperating systems simulates a "dumb" terminal and is able to render the graphical and text elements of the host application, send keystrokes and process commands using the appropriate terminal protocol.
+*** Other Types
+Other type of emulators:
+- Hardware emulation: the process of imitating the behavior of one or more pieces of hardware with another piece of hardware, typically a special purpose emulation system
+- In-circuit emulation: the use of a hardware device to debug the software of an embedded system
+- Floating-point emulator: Some floating-point hardware only supports the simplest operations: addition, subtraction, and multiplication. In systems without any floating-point hardware, the CPU emulates it using a series of simpler fixed-point arithmetic operations that run on the integer arithmetic logic unit.
+- Instruction set simulator: Mimics the behavior of a mainframe or microprocessor by "reading" instructions and maintaining internal variables wich represents the processor's registers.
+- Network emulation: a technique for testing the performance of real applications over a virtual network. This is different from network simulation where virtual models of traffic, network models, channels, and protocols are applied.
+- Server emulator: Multiplayer video games often rely on an online game server, which may or may not be available for on-premises installation. A server emulator is an unofficial on-premises server that imitates the behavior of the official online server, even though its internal working might be different.
+- Semiulation: the process of controlling an emulation through a simulator.
+
+* Structure and organization of Emulators.
+Typically, an emulator is divided into modules that correspond roughly to the emulated computer's subsystems. Most often, an emulator will be composed of the following modules:
+- a *CPU* emulator or *CPU* simulator, unless the target being emulated has the same *CPU* architecture as the host, in which case a *VM* layer may be used instead
+- a memory subsystem module
+- virtual I/O device emulators
+- *GPU/PPU* emulators
+  Buses are often not emulated, either for reasons of performance or simplicity, and virtual peripherals communicate directly with the *CPU* or the memory subsystem.
+
+** Memory subsystem
+It is possible for the memory subsystem emulation to be reduced to simply an array of elements each sized like an emulated word; however, this model fails very quickly as soon as any location in the computer's logical memory does not match physical memory. This clearly is the case whenever the emulated hardware allows for advanced memory management ( in which case, the *MMU* logic can be embedded in the memory emulator, made a module of its own, or sometimes integrated into the *CPU* simulator). Even if the emulated computer does not fear an *MMU*, though, there are usually other factors that break the equivalence between logical and physical memory: many architectures offer memmory-mapped I/O; even those that do not often have a block of logical memory mapped to *ROM*, which means that the memory-array module must be discarded if the read-only naturte of *ROM* is to be emulated. Features such as bank switching or segmentation may also complicate memory emulation. As a result, most emulators implement at least two procedures for writing to and reading from logical memory, and it is the procedures' duty to map every access to the correct location of the correct object.
+
+On a base-limit addressing system where memory from address 0 to address _ROMSIZE-1_ is read-only memory, while the rest is *RAM*, something along the lines of the following procedures would be typical:
+#+begin_src C
+void WriteMemory(word addr, word val)
+{
+    word RealAddr = addr + BaseRegister;
+    if ((RealAddr < LimitRegister) && (RealAddr > ROMSIZE))
+        Memory[RealAddr] = val;
+    else
+        RaiseInterrupt(INT_SEGFAULT);
+}
+
+void ReadMemory(word addr)
+{
+    word RealAddr = addr + BaseRegister;
+    if (RealAddr < LimitRegister)
+        return Memory[RealAddr];
+    else
+        return NULL;
+}
+#+end_src
+** CPU Simulator
+The *CPU* simulator is often the most complicated part of an emulator. Many emulators are written using "pre-packaged" CPU simulators, in order to concentrate on good and efficient emulation of a specific machine. The simplest form of a CPU simulator is an interpreter, which is a computer program that follows the execution flow of the emulated program code and, for every machine code instruction encountered, executes operations on the host processor that are semantically equivalent to the original instructions. This is made possible by assigning a variable to each register and flag of the simulated CPU. The logic of the simulated CPU can then more or less be directly translated into software algorithms, create a software reimplementation that basically mirrors the original hardware implementation.
+The following example illustrates how CPU simulation can be accomplished by an interpreter. In this case, interrupts are checked-for before every instruction executed, though this behavior is rare in real emulators for performance reasons (it is generally faster to use a subroutine to do the work of an interrupt).
+#+begin_src C
+void execute()
+{
+    if (interupt != INT_NONE) {
+        SuperUser = TRUE;
+        WriteMemory(++SP, PC);
+        PC = InterruptPtr;
+    }
+    switch (ReadMemory(PC++)) {
+        // Instruction handling goes here.
+        default:
+            Interrupt = INT_ILLEGAL;
+    }
+}
+#+end_src
+Interpreters are very popular as computer simulations, as they are much simpler to implement than more time-efficient alternative solutions, and their speed is more than adequate for emulating computers of more than roughly a decade ago on modern machines. However, the speed penalty inherent in intepretation can be a problem when emulating computers whose processor speed is on the same order of magnitude as the hoste machine. Until not many years ago, emulation in such situations was considered cimpletely impractical by many.
+What allowed breaking through this restriction were the advances in dynamic recompilation techniques. Simple a _priori_ translation of emulated program code into code runnable on the host archictecture is usually impossible because of several reasons:
+- code may be modified while in Ram, even if it is modified only by the emulated operating system when loading the code (for example from disk)
+- there may not be a way to reliably distinguish data (which should not be translated) from executable code.
+Various forms of dynamic recompilation, includeing the popular Just in Time compiler (JIT) technique, try to circumvent these problems by waiting until the processor control flow jumps into location containing untranslated code, and only then JIT translates a block of the code into host code that can be executed. The translated code is kept in a code cache, and the original code is not lost or affected; this way, even data segments can be (meaninglessly) translated by the recompiler, resulting in no more than a waste of translation time. Speed may not be desirable as some older games were not designed with the speed of faster computers in mind. A game designed for a 30MHz PC with a level timer of 300 game seconds might only give the player 30 seconds on a 300MHz PC. Other programs, such as some DOS programs, may not even run on faster computers. Particularly when emulating computers which were "closed-box", in which changes to the core of the system were not typical, software may use techniques that depend on specific charecteristics of the computer it ran on and thus precise control of the speed of emulation is important for such applications to be properly emulated.
+** I/O
+Most emulators do not, as mentioned earlier, emulate the main system bus; each I/O device is thus often treated as a special case, and no consistent interface for virtual peripherals is provided. This can result in a performance advantage, since each I/O module can be tailored to the charecteristics of the emulated device; designs based on a standard, unified I/O API can, however rival such simpler models, if well thoguht-out, and they have the additional advantage of "automatically" providing a plug-in service through which third-party virtual devices can be used within the emulator. A unified I/O API may not necessarily mirror the structure of the real hardware bus: bus designe is limited by several electric constraints and a need for hardware concurrency management that can mostly be ignored in a software implementation.
+Even in emulators that treat each device as a special case, there is usually a common basic Infrastructure for:
+- managing interrupts, by means of a proccedure that sets flags readable by the CPU simulator whenever an interrupt is raised, allowing the virtual CPU to "poll for (virtual) interrupts"
+- wiriting to and reading from physical memory, by means of two procedures similar to the ones dealing with logical memory (although, contrary to the latter, the former can often be left out, and direct references to the memory array be employed instead)
+* Applications
+** In preservation
+Emulation is one strategy in pursuit of digital preservation and combating obsolescence. Emulation focuses on recreating an original computer environment, which can be time-consuming and difficult to achieve, but valuable because of its ability to maintain a closer connection to the authenticity of the digital object, operating system, or even gaming platform. Emulation addresses the original hardware and software environment of the digital object, and recreates it on a current machine. The emulator allows the user to have access to any kind of application or operating system on a current platform, while the software runs as it did in its original environment. Jeffery Rothenberg, an early proponent of emulation as a digital preservation strategy states, "the ideal approach would provide a single extensible, long-term solution that can be designed once and for all and applied uniformly, automatically, and in organized synchrony (for example, at every refresh cycle) to all types of documents and media". He further states that this should not only apply to out of data systems, but also be upwardly mobile to future unknown systems. practically speaking, when a certain application is released in a new version, rather than address compatibility issues and migration for every digital object created in the previous version of that application, one could create an emulator for the application, allowing access to all of said digital objects.
+*** Benefits
+- Potentially better graphics quality than original hardware.
+- Potentially additional features original hardware didn't have.
+- Emulators maintain the original look, feel and behavior of the digital object, which is just as important as the digital data itself.
+- Reduces labor hours, because rather than continuing an ongoing task of continual data migration for every digital object, once the library of past and present operating systems and application software is established in an emulator, these same technologies are used for every document using these platforms.
+- Many emulators have already been developed and released under the *GNU General Public License* through the open source environment, allowing for wide scale collaboration.
+- Emulators allow software exclusive to one system to be used on another. For example, a PlayStation 2 exclusive video game could be played on a PC using an emulator. This is especially useful when the original system is difficult to obtain and the analog-digital adapter can't be obtained or doesn't exits.
+*** Obstacles
+- The legality surrounding Intelectual property rights is an ongoing issue. many development teams, companies, and technology vendors alike somtimes implemented non-standard features during program development in order to establish their niche in the market, while simultaneously applying ongoing upgrades to remain competitive. While this may have advanced the technology industry and increased vendor's market share, it has left users lost in a preservation nightmare with little supporting documentation dute to the proprietary nature of the hardware and software.
+- Copyright laws are not yet in effect to address saving the documentation and specification of proprietary software and hardware in an emulator module.
+- Emulators are often used as a copyright infringement tool, since they allow users to play video games without having to buy the console, and rarely make any attempt to prevent the use of illegal copies. This leads to a number of legal uncertainties regarding emulation, and leads to software being programmed to refuse to work if it can tell the host is an emulator; some video games in particular will continue to run, but not allow the player to progress beyound some late stage in the game, often appearing to be faulty or just extremely difficult. These protections make it more difficult to design emulators, since they must be accurate enough to avoid triggering the procections, whose effects may not be obvious.
+- Emulators require better hardware than the original system has.
+** In new media Art
+Because of its primary use of digital formats, new media art relies heavily on emulation as preservation strategy. Artists such as Cory Arcangel specialize in resurrecting obsolete technologies in their artwork and recognize the importance of a decentralized and deinstitutionalized process for the preservation of digital culture. In many cases, the goal of emulation in new media art is to preserve a digital medium so it can be saved indefinitely and reproduce without error, so that there is no reliance on hardware that ages and becomes obsolete. The paradox is that the emulation and the emulator have to be made to work on future computers.
+** In future systems design
+Emulation techniques are commonly used during the designe and development of new systems. It eases the development process by providing the ability to detect, recreate and repair flaws in the design even before the system is actually built it is particularly useful in the designe of multi-core systems, where concurrency errors can be very difficult to detect and correct without the controlled environment provided by virtual hardware. This also allows the software development to take place before the hardware is ready thus helping to validate design decisions and give a little more control.
+* Comparison with simulation

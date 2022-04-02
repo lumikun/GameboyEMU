@@ -16,7 +16,7 @@ int main(int argc, char **argv)
 		return -2;
 	}
 
-	printf("Kartridza ieladeta...\n");
+	printf("Kartridza ieladeta...\n");
 	
 	SDL_Init(SDL_INIT_VIDEO);
 	printf("SDL INIT...\n");

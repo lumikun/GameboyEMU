@@ -145,7 +145,6 @@ void cpu_fetch_data()
             ctx.fetched_data = cpu_read_reg(ctx.cur_inst->reg_2);
             ctx.mem_dest = cpu_read_reg(ctx.cur_inst->reg_1);
             ctx.dest_is_mem = true;
-
             if (ctx.cur_inst->reg_1 == RT_C)
                 ctx.mem_dest |= 0xFF00;
             return;
