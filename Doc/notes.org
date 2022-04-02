@@ -19,6 +19,10 @@
   - [[#in-new-media-art][In new media Art]]
   - [[#in-future-systems-design][In future systems design]]
 - [[#comparison-with-simulation][Comparison with simulation]]
+- [[#gameboy-emulation][Gameboy Emulation]]
+  - [[#specifications-of-dmg-gameboy][Specifications of DMG Gameboy]]
+  - [[#hardware-access][Hardware access]]
+  - [[#graphics][Graphics]]
 
 * Emulation..
 ** What is Emulation?
@@ -131,3 +135,35 @@ Because of its primary use of digital formats, new media art relies heavily on e
 ** In future systems design
 Emulation techniques are commonly used during the designe and development of new systems. It eases the development process by providing the ability to detect, recreate and repair flaws in the design even before the system is actually built it is particularly useful in the designe of multi-core systems, where concurrency errors can be very difficult to detect and correct without the controlled environment provided by virtual hardware. This also allows the software development to take place before the hardware is ready thus helping to validate design decisions and give a little more control.
 * Comparison with simulation
+* Gameboy Emulation
+** Specifications of DMG Gameboy
+- *CPU*: Sharp SM83 LR35902 (4.19MHz)
+- *RAM*: 8KB (also called Work RAM/WRAM)
+- *GFX*: PPU, LCD 160x144px 4 shades of gray.
+** Hardware access
+The SM83 keeps an 8-bit data bus and a 16-bit address bus, so up to 64 KB of memory can be addressed. The memory map is composed of:
+- Cartridge space.
+- WRAM and Display RAM.
+- I/O (Joypad, Audio, Graphics and LCD)
+- Interrupt controls.
+** Graphics
+All graphics calculations are done by the CPU, then the Picture Processing Unit or *'PPU'* renders them. This is another component found inside the DMG-CPU and it's actually based on the Predecessor's PPU(SNES?).
+The Picture is displayed on an integrated LCD screen, it has a resolution of 160x144px and shows 4 shades of black. But since the original Gameboy has a green LCD, graphics will look greenish.
+*** Organising the Contents
+The PPU has 8KB of VRAM or 'Display RAM', which both PPU and CPU can access directly but not at the same time. Those 8 KB will contain most of the data the PPU will need to render graphics. The remaining bits will be stored inside the PPU instead, as they will require a faster access rate.
+The Game is in charge of populating the different areas with the correct type of data. Moreover, the PPU exposes registers so the game can instruct the PPU how the data is organised.
+*** Constructing the frame
+For demonstration purposes Super Mario Land 2 will be used as an example:
+**** Tiles
+#+CAPTION: Image of the Tiles from the Pattern Table.
+#+NAME: fig:TilesPPU
+[[./img/tiles.png]]
+The PPU uses tiles as a basic ingredient for rendering graphics, specifically, sprites and backgrounds.
+Tiles are just 8x8 bitmaps stored in VRAM, in a region called 'Tile set' or 'Tile pattern table', each pixel corresponds to one of the four shades of grey available. Finally, tiles are grouped into two pattern tables.
+In order to build the picture, tiles are referenced in another type of table called a Tile map.
+This information will tell the PPU where to render the tiles. Two maps are stored to construct different layers of the frame.
+The next section explains how tile maps are used to construct the layers
+**** Background
+**** Window
+**** Sprites
+**** Result
