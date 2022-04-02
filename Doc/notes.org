@@ -23,6 +23,9 @@
   - [[#specifications-of-dmg-gameboy][Specifications of DMG Gameboy]]
   - [[#hardware-access][Hardware access]]
   - [[#graphics][Graphics]]
+  - [[#audio][AUDIO]]
+  - [[#games][Games]]
+  - [[#anti-piracy][Anti-piracy]]
 
 * Emulation..
 ** What is Emulation?
@@ -186,3 +189,29 @@ Once the frame is finished, it's time to move on to the next one! However, the C
 When a single scan-line is complete, the Horizontal Blank interrupt is called. This allows to fiddle with the part of the frame that has not yet been drawn.
 When all scan-lines are complete, the Vertical Blank interrupt is called. The game can now update the graphics for the next frame.
 There's an extra state called OAM search that is triggered at the start of the scan-line, at this point the PPU is processing which sprites will be displayed in the scan-line, so the game can update any region except OAM.
+
+*** Secrets and Limitations
+The inclusion of the Window layer and extra interrupts allowed for new types of content and effects.
+**** Wobble effect
+*TODO* Finnish writing.
+** AUDIO
+The audio system is carried out by the Audio Processing Unit (APU), a PSG chip with four channels.
+*** Functionality
+Each channel is reserved for a type of wave-form:
+**** Pulse
+*TODO* write this
+**** Noise
+*TODO* write this
+**** Wave
+*TODO* write this
+*** Secrets and limitations
+The mixer outputs stereo sound, so the channels can be assigned to the left side or on the right one, this is only possible to hear from the headphones though! The speaker is mono.
+Furthermore, the mixer chip is also connected to a dedicated pin on the cartridge, allowing to stream an extra channel with the condition that the cartridge has to actually output the analogue sound (only possible with extra hardware). No game in the market ended up using this feature.
+** Games
+Games are written in assembly and they have a maximum size of 32 KB, this is due to the limited address space available. However, with the use of Memory Bank Controller (mapper), games can reach bigger sizes.
+The biggest cartridge found in the market has a 1MB ROM.
+Cartridges can include a real-time clock and an external batter along with SRAM to hold saves.
+*** External communications
+For the first time, games can communicate with other consoles with the use of a Game Boy Link cable, which provides multiplayer functionality. The interface uses a very primitive type of serial connection.
+** Anti-piracy
+This console contains a 256 Byte ROM stacked in the CPU that is used to bootstrap the cartridge's ROM. It doesn't run the game right away however, it first executes a series of checks that prevent the execution of unauthorised cartridges and also makes sure the cartride is correctly inserted.
