@@ -164,6 +164,25 @@ In order to build the picture, tiles are referenced in another type of table cal
 This information will tell the PPU where to render the tiles. Two maps are stored to construct different layers of the frame.
 The next section explains how tile maps are used to construct the layers
 **** Background
+*TODO* Set up image
+The Background layer is a 256x256 pixel (32x32 tiles) map containing static tiles. However, remember that only 160x144 is viwable on the screen, so the game decides which part is selected for display. Games can also move the viewable area druing gameplay, that's how the Scrolling Effect is accomplished.
+One of the two tile maps can be used to build the background layer.
 **** Window
+*TODO* Add Image
+The Window is a 160x144px layer containing tiles displayed on top of the background and sprites. It doesn't scroll.
+The remaining tile map can be assigned to the window layer.
+At first, this may sound like a silly feature. After all, the window layer overlaps everything else so what's it useful for? Well both Background and Window can be used concurrently at different parts of the screen. This is accomplished by changing the LCDCONT register during specific scan-lines.
+Thus, games normaly use it to display player stats, score and other 'always-on' information.
 **** Sprites
+*TODO* add images.
+Sprites are tiles that can move independently around the screen. They can also overlap each other and appear behind the background, the viewable graphic will be decided based on a priority attribute.
+They also have an extra colour available:
+Transparent. So, they can only display three different greys of four. Luckily, this layer allows defining two colour palettes to make use of every colour.
+The Object Attribute Memory or 'OAM' is a map stored inside the PPU which specifies the tiles that will be used as sprites. Games fill this region by calling the DMA unit found inside the chip, the DMA fetches data from main RAM or game ROM to OAM.
+Apart from the tile index, each entry contains the following attrigutes: X-Y position, colour pallete, priority and flip flags.
+The PPU is limited to rendering up to ten sprites per scan-line and up to 40 per frame, overflowing this will result in sprites not being drawn.
 **** Result
+Once the frame is finished, it's time to move on to the next one! However, the CPU can't modify the tables while the PPU is reading from VRAM, so the system provides a set of interrupts triggered when the PPU is idle. You can recall this behaviour from the times of the NES.
+When a single scan-line is complete, the Horizontal Blank interrupt is called. This allows to fiddle with the part of the frame that has not yet been drawn.
+When all scan-lines are complete, the Vertical Blank interrupt is called. The game can now update the graphics for the next frame.
+There's an extra state called OAM search that is triggered at the start of the scan-line, at this point the PPU is processing which sprites will be displayed in the scan-line, so the game can update any region except OAM.
