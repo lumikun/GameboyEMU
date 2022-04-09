@@ -179,6 +179,7 @@ For demonstration purposes Super Mario Land 2 will be used as an example:
 **** Tiles
 #+CAPTION: Image of the Tiles from the Pattern Table.
 #+NAME: fig:TilesPPU
+#+ATTR_ORG: :width 200
 [[./img/tiles.png]]
 The PPU uses tiles as a basic ingredient for rendering graphics, specifically, sprites and backgrounds.
 Tiles are just 8x8 bitmaps stored in VRAM, in a region called 'Tile set' or 'Tile pattern table', each pixel corresponds to one of the four shades of grey available. Finally, tiles are grouped into two pattern tables.

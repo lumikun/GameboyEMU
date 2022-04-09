@@ -1,5 +1,7 @@
 #include "bus.h"
 #include "cart.h"
+#include "ram.h"
+#include "cpu.h"
 
 // 0x0000 - 0x3FFF : ROM Bank 0
 // 0x4000 - 0x7FFF : ROM Bank 1 - Switchable
@@ -19,9 +21,27 @@ u8 bus_read(u16 addr)
 {
     if (addr < 0x8000) {
         return cart_read(addr);
+    } else if (addr < 0xA000) {
+        printf("Err... UNSUPPORTED bus_read(%04X)\n", addr);
+        NO_IMPL
+    } else if (addr < 0xC000) {
+        return cart_read(addr);
+    } else if (addr < 0xE000) {
+        return wram_read(addr);  // Working RAM
+    } else if (addr < 0xFE00) {
+        return 0;                // Reserved Echo RAM
+    } else if (addr < 0xFEA0) {
+        printf("Err... UNSUPPORTED bus_read(%04X)\n", addr);
+        NO_IMPL                  // OAM TODO!!
+    } else if (addr < 0xFF00) {
+        return 0;                // Reserved Unusable
+    } else if (addr < 0xFF80) {
+        printf("Err... UNSUPPORTED bus_read(%04X)\n", addr);
+        NO_IMPL
+    } else if (addr == 0xFFFF) {
+        return cpu_get_ie_register(); // CPU enable register & TODO!!!
     }
-    printf("Err... Neatbalstts bus_read(%04X)\n", addr);
-    //NO_IMPL
+    return hram_read(addr);
 }
 
 void bus_write(u16 addr, u8 val)
@@ -29,7 +49,28 @@ void bus_write(u16 addr, u8 val)
     if (addr < 0x8000) {
         cart_write(addr, val);
         return;
+    } else if (addr < 0xA000) {
+        printf("Err... UNSUPPORTED bus_write(%04X)\n", addr);
+        NO_IMPL
+    } else if (addr < 0xC000) {
+        cart_write(addr, val);
+    } else if (addr < 0xE000) {
+        wram_write(addr, val);
+    } else if (addr < 0xFE00) {
+        // reserved echo RAM
+    } else if (addr < 0xFEA0) {
+        printf("Err... UNSUPPORTED bus_write(%04X)\n", addr);
+        NO_IMPL
+    } else if (addr < 0xFF00) {
+        // unusable reserved
+    } else if (addr < 0xFF80) {
+        printf("Err... UNSUPPORTED bus_write(%04X)\n", addr);
+    } else if (addr == 0xFFFF) {
+        cpu_set_ie_register(val);
+    } else {
+        hram_write(addr, val);
     }
+
     printf("Err... Neatbalstits bus_write(%04X)\n", addr);
     //NO_IMPL
 }
