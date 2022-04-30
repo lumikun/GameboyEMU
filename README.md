@@ -23,6 +23,7 @@ Priekš `Windows` sistēmām izmantots [`Visual Studio Community 2019`](https://
 # TODO Plāns 
 -   [x] Izveidot primitivue sistēmu kas var ielādēt ROM failus. 
 -   [x] Izveidot pamata Systemu.
+-   [ ] meson.build vajag atsevišķu dep tree priekš Windows.
 -   [ ] Veidot pierakstus un dokumentāciju.
 -   [ ] Izveidot CPU Emulāciju. 
 -   [ ] Izveidot emulātorām `upscale` funkcionalitāti.
@@ -39,3 +40,9 @@ Priekš `Windows` sistēmām izmantots [`Visual Studio Community 2019`](https://
 -   Bibleotēka [SDL2](https://www.libsdl.org/download-2.0.php).
 -   [Meson](https://mesonbuild.com/) veidošanas sistēma.
 -   [VS2019](https://visualstudio.microsoft.com/) MSVC Kompilātors.
+
+# Dependency list
+-   SDL2
+-   SDL2_TTF
+-   freetype2
+-   zlib
