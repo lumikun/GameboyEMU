@@ -2,6 +2,7 @@
 #include "util.h"
 #include "include.h"
 #include "bus.h"
+#include "stack.h"
 
 static void proc_none(cpu_context *ctx)
 {
@@ -47,7 +48,7 @@ static void proc_ldh(cpu_context *ctx)
     } else {
         bus_write(ctx->mem_dest, ctx->reg.a);
     }
-    emu_cycle(1);
+    emu_cycles(1);
 }
 
 
@@ -121,9 +122,9 @@ static void proc_ret(cpu_context *ctx)
         emu_cycles(1);
     if (proc_check_cond(ctx)) {
         u16 lo = stack_pop();
-        emu_cycle(1);
+        emu_cycles(1);
         u16 hi = stack_pop();
-        emu_cycle(1);
+        emu_cycles(1);
 
         u16 n = (hi << 8) | lo;
         ctx->reg.pc = n;
