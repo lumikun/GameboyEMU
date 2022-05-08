@@ -31,6 +31,7 @@ typedef struct {
     u8 ie_register;
 } cpu_context;
 
+cpu_reg *cpu_get_reg();
 
 void cpu_init();
 bool cpu_step();

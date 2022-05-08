@@ -1,9 +1,11 @@
 #include "stack.h"
+#include "cpu.h"
+#include "bus.h"
 
 void stack_push(u8 data)
 {
-    cpu_get_regs()->sp--;
-    bus_write(cpu_get_regs()->sp, data);
+    cpu_get_reg()->sp--;
+    bus_write(cpu_get_reg()->sp, data);
 }
 
 void stack_push16(u16 data)
@@ -14,7 +16,7 @@ void stack_push16(u16 data)
 
 u8 stack_pop()
 {
-    return bus_read(cpu_get_regs()->sp++);
+    return bus_read(cpu_get_reg()->sp++);
 }
 
 u16 stack_pop16()

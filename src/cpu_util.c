@@ -239,3 +239,8 @@ void cpu_fetch_data()
             return;
     }
 }
+
+cpu_reg *cpu_get_reg() 
+{
+    return &ctx.reg;
+}
