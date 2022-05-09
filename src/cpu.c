@@ -1,5 +1,6 @@
 #include "cpu.h"
 #include "bus.h"
+#include "interrupt.h"
 #include "include.h"
 
 cpu_context ctx = {0};
@@ -47,6 +48,21 @@ bool cpu_step()
         cpu_execute();
     }
     return true;
+}
+
+void cpu_handle_interrupt(cpu_context *ctx) 
+{
+    if (inter_check(ctx, 0x40, IT_VBLANK)) {
+
+    } else if (inter_check(ctx, 0x48, IT_LCD_STAT)) {
+        
+    } else if (inter_check(ctx, 0x50, IT_TIMER)) {
+
+    } else if (inter_check(ctx, 0x58, IT_SERIAL)) {
+
+    } else if (inter_check(ctx, 0x60, IT_JOYPAD)) {
+        
+    }
 }
 
 u8 cpu_get_ie_register() {

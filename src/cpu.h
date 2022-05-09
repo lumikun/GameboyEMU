@@ -29,6 +29,7 @@ typedef struct {
     bool int_master_enabled;
 
     u8 ie_register;
+    u8 inter_flag;
 } cpu_context;
 
 cpu_reg *cpu_get_reg();
@@ -40,8 +41,10 @@ typedef void (*IN_PROC)(cpu_context *);
 
 IN_PROC inst_get_processor(in_type type);
 
-#define CPU_FLAG_Z BIT(ctx->reg.f, 7)
-#define CPU_FLAG_C BIT(ctx->reg.f, 4)
+#define CPU_FLAG_Z BIT(ctx->reg.f, 7) // Zero flag
+#define CPU_FLAG_N BIT(ctx->reg.f, 6) // Subtraction flag
+#define CPU_FLAG_H BIT(ctx->reg.f, 5) // Half-carry flag
+#define CPU_FLAG_C BIT(ctx->reg.f, 4) // Carry flag
 
 void cpu_set_flags(cpu_context *ctx, char z, char n, char h, char c);
 u16 cpu_read_reg(reg_type rt);
@@ -49,3 +52,5 @@ void cpu_set_reg(reg_type rt, u16 val);
 void cpu_fetch_data();
 u8 cpu_get_ie_register();
 void cpu_set_ie_register(u8 n);
+
+void cpu_handle_interrupt(cpu_context *ctx);

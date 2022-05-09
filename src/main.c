@@ -15,31 +15,38 @@ int main(int argc, char **argv)
 		printf("Err: Neizdevas ieladet ROM failu. %s\n", argv[1]);
 		return -2;
 	}
+	ui_init();
 
-	printf("Kartridza ieladeta...\n");
-	
-	SDL_Init(SDL_INIT_VIDEO);
-	printf("SDL INIT...\n");
-	TTF_Init();
-	printf("TTF INIT...\n");
+	pthread_t t1;
 
-	cpu_init();
+	if (pthread_create(&t1, NULL, cpu_run, NULL)) {
+		printf("Err... Failed to start main Thread\n");
+		return -1;
+	}
 
-	ctx.running = true;
+	while (!ctx.die) {
+		usleep(1000);
+		ui_handle_event();
+	}
+	return 0;
+}
+
+void *cpu_run(void *p)
+{
+    cpu_init();
+    ctx.running = true;
 	ctx.paused = false;
 	ctx.ticks = 0;
 
-	while(ctx.running) {
+	while (ctx.running) {
 		if (ctx.paused) {
 			delay(10);
 			continue;
 		}
-
 		if (!cpu_step()) {
-			printf("Err: CPU apstajies...\n");
-			return -3;
+			printf("Err... CPU Stoped\n");
+			return 0;
 		}
-
 		ctx.ticks++;
 	}
 	return 0;
