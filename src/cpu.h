@@ -27,6 +27,7 @@ typedef struct {
     bool halted;
     bool stepping;
     bool int_master_enabled;
+    bool ime_enable;
 
     u8 ie_register;
     u8 inter_flag;
@@ -49,7 +50,13 @@ IN_PROC inst_get_processor(in_type type);
 void cpu_set_flags(cpu_context *ctx, char z, char n, char h, char c);
 u16 cpu_read_reg(reg_type rt);
 void cpu_set_reg(reg_type rt, u16 val);
+u8 cpu_read_reg8(reg_type rt);
+void cpu_set_reg8(reg_type rt, u8 val)
 void cpu_fetch_data();
+
+u8 cpu_get_inter_flag();
+void cpu_set_inter_flag(u8 val);
+
 u8 cpu_get_ie_register();
 void cpu_set_ie_register(u8 n);
 
