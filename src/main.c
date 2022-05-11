@@ -62,5 +62,9 @@ emu_context *emu_get_context() {
 
 void emu_cycles(int cpu_cycles)
 {
-	// TODO ...
+	int n = cpu_cycles * 4;
+	for (int i = 0; i < n; i++) {
+		ctx.ticks++;
+		timer_tick();
+	}
 }

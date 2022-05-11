@@ -59,6 +59,61 @@ u16 cpu_read_reg(reg_type rt)
     }
 }
 
+u8 cpu_read_reg(reg_type rt)
+{
+    switch(rt) {
+        case RT_A: 
+            return ctx.regs.a;
+        case RT_F: 
+            return ctx.regs.f;
+        case RT_B: 
+            return ctx.regs.b;
+        case RT_C: 
+            return ctx.regs.c;
+        case RT_D: 
+            return ctx.regs.d;
+        case RT_E: 
+            return ctx.regs.e;
+        case RT_H: 
+            return ctx.regs.h;
+        case RT_L: 
+            return ctx.regs.l;
+        case RT_HL: {
+            return bus_read(cpu_read_reg(RT_HL));
+        }
+        default:
+            printf("Err... INVALID REG8: %d\n", rt);
+            NO_IMPL
+    } 
+}
+
+void cpu_set_reg8(reg_type rt, u8 val)
+{
+    switch(rt) {
+        case RT_A: 
+            ctx.regs.a = val & 0xFF; break;
+        case RT_F: 
+            ctx.regs.f = val & 0xFF; break;
+        case RT_B: 
+            ctx.regs.b = val & 0xFF; break;
+        case RT_C: 
+            ctx.regs.c = val & 0xFF; break;
+        case RT_D: 
+            ctx.regs.d = val & 0xFF; break;
+        case RT_E: 
+            ctx.regs.e = val & 0xFF; break;
+        case RT_H: 
+            ctx.regs.h = val & 0xFF; break;
+        case RT_L: 
+            ctx.regs.l = val & 0xFF; break;
+        case RT_HL: 
+            bus_write(cpu_read_reg(RT_HL), val); break;
+        default:
+            printf("Err... INVALID REG8: %d\n", rt);
+            NO_IMPL
+    }
+}
+
 void cpu_set_reg(reg_type rt, u16 val)
 {
     switch (rt) {
@@ -243,4 +298,14 @@ void cpu_fetch_data()
 cpu_reg *cpu_get_reg() 
 {
     return &ctx.reg;
+}
+
+u8 cpu_get_inter_flag()
+{
+    return ctx.inter_flag;
+}
+
+void cpu_set_inter_flag(u8 val)
+{
+    ctx.inter_flag = val;
 }
