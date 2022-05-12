@@ -27,6 +27,9 @@
   - [[#audio][AUDIO]]
   - [[#games][Games]]
   - [[#anti-piracy][Anti-piracy]]
+- [[#thoughts-on-the-whole-work-diary][Thoughts on the whole work Diary.]]
+  - [[#little-issues][Little issues.]]
+  - [[#practicum-thoughts][Practicum thoughts.]]
 
 * Emulation..
 ** What is Emulation?
@@ -235,3 +238,11 @@ Cartridges can include a real-time clock and an external batter along with SRAM 
 For the first time, games can communicate with other consoles with the use of a Game Boy Link cable, which provides multiplayer functionality. The interface uses a very primitive type of serial connection.
 ** Anti-piracy
 This console contains a 256 Byte ROM stacked in the CPU that is used to bootstrap the cartridge's ROM. It doesn't run the game right away however, it first executes a series of checks that prevent the execution of unauthorised cartridges and also makes sure the cartride is correctly inserted.
+* Thoughts on the whole work Diary.
+** Little issues.
+Working on Mac OS seams that Clang is a bit picky with functions and causes issues when compiling and screams about duplicate subroutines. Might need to test this on gcc if that also has issues. Altho i imaigne it might be fine. But will check tomorow.
+Other than that Everything seams to be working and should compile just the issues with well Linker on clang.
+** Practicum thoughts.
+The whole practicum thing is a bit mental to me. TODO need to make a presentation and a 13page paper on what the whole thing is. While usually it's nothing hard I'll have to check if I can figure some more shit out. As if i have to do everything right now it's a bit of an issue to make it to Sunday. Since I have to finnnish and get everything to compile and then also figure out an easy way to write the paper and a presentation of 7 minutes with hopefully a demo of everything compiling and explaining well a bit about what i did and didnt do and what were the issues about the whole thing. So as it stands right now I'm in a bit of a pickle. But I imagine it's not as bad as it might seem.
+I'll try and email the school tomorow about if i can extend the deadly because it seams a bit unfair to have 14th and 15th may be the deadline and then also 24th may. which everyone applied for so all the places are taken up. So it's a tad bit cringe. But oh well We'll see if i can extend the whole thing since I do need a bit more time and things to do. But for Now it seams to be fine. Hopefully i don't have to get ready for 15th. Which would mean probably 2 all nighters aswell as trying to help a friend with their stats Exam.
+Ohh boy. I'm in Mental HELL at the moment. :^)
