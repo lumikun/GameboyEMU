@@ -2,6 +2,8 @@
 #include "bus.h"
 #include "interrupt.h"
 #include "dbg.h"
+#include "timer.h"
+#include "instr.c"
 #include "include.h"
 
 cpu_context ctx = {0};
@@ -12,10 +14,10 @@ void cpu_init()
 {
     ctx.reg.pc = 0x100;
     ctx.reg.sp = 0xFFFF;
-    *((short) *)&ctx.reg.a) = 0xB001;
-    *((short) *)&ctx.reg.b) = 0x1300;
-    *((short) *)&ctx.reg.d) = 0xD800;
-    *((short) *)&ctx.reg.h) = 0x4D01;
+    *((short *)&ctx.reg.a) = 0xB001;
+    *((short *)&ctx.reg.b) = 0x1300;
+    *((short *)&ctx.reg.d) = 0xD800;
+    *((short *)&ctx.reg.h) = 0x4D01;
     ctx.ie_register = 0;
     ctx.inter_flag = 0;
     ctx.int_master_enabled = false;
@@ -45,9 +47,9 @@ bool cpu_step()
     if (!ctx.halted) {
         u16 pc = ctx.reg.pc;
 
-        fetch_instruction();
+        cpu_fetch_inst();
         emu_cycles(1);
-        fetch_data();
+        cpu_fetch_data();
     // cleanup TODO!
         char flags[16];
         sprintf(flags, "%c%c%c%c", 
@@ -74,18 +76,18 @@ bool cpu_step()
         dbg_update();
         dbg_print();
 
-        execute();
+        cpu_execute();
     } else {
         //is halted...
         emu_cycles(1);
 
-        if (ctx.int_flags) {
+        if (ctx.inter_flag) {
             ctx.halted = false;
         }
     }
 
     if (ctx.int_master_enabled) {
-        cpu_handle_interrupts(&ctx);
+        cpu_handle_inter(&ctx);
         ctx.ime_enable = false;
     }
 
@@ -96,7 +98,7 @@ bool cpu_step()
     return true;
 }
 
-void cpu_handle_interrupt(cpu_context *ctx) 
+void cpu_handle_inter(cpu_context *ctx) 
 {
     if (inter_check(ctx, 0x40, IT_VBLANK)) {
 

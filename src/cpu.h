@@ -51,7 +51,7 @@ void cpu_set_flags(cpu_context *ctx, char z, char n, char h, char c);
 u16 cpu_read_reg(reg_type rt);
 void cpu_set_reg(reg_type rt, u16 val);
 u8 cpu_read_reg8(reg_type rt);
-void cpu_set_reg8(reg_type rt, u8 val)
+void cpu_set_reg8(reg_type rt, u8 val);
 void cpu_fetch_data();
 
 u8 cpu_get_inter_flag();
@@ -60,4 +60,4 @@ void cpu_set_inter_flag(u8 val);
 u8 cpu_get_ie_register();
 void cpu_set_ie_register(u8 n);
 
-void cpu_handle_interrupt(cpu_context *ctx);
+void cpu_handle_inter(cpu_context *ctx);

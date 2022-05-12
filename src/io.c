@@ -17,14 +17,14 @@ u8 io_read(u16 addr)
     }
 
     if (addr == 0xFF0F) {
-        return cpu_get_int_flags();
+        return cpu_get_inter_flag();
     }
 
     printf("Err... UNSUPPORTED bus_read(%04X)\n", addr);
     return 0;
 }
 
-u8 io_read(u16 addr, u8 val)
+void io_write(u16 addr, u8 val)
 {
     if (addr == 0xFF01) {
         serial_data[0] = val;
@@ -42,7 +42,7 @@ u8 io_read(u16 addr, u8 val)
     }
     
     if (addr == 0xFF0F) {
-        cpu_set_int_flags(val);
+        cpu_set_inter_flag(val);
         return;
     }
 

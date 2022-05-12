@@ -1,5 +1,6 @@
 #include "instr.h"
 #include "cpu.h"
+#include "bus.h"
 
 // TODO add more instructions
 
@@ -346,86 +347,104 @@ static char *rt_table[] = {
     "HL", "SP", "PC"
 };
 
-void inst_to_string(cpu_context *ctx, char *str)
-{
+void inst_to_str(cpu_context *ctx, char *str) {
     instruction *inst = ctx->cur_inst;
     sprintf(str, "%s ", inst_name(inst->type));
 
-    switc(inst->mode) {
+    switch(inst->mode) {
         case AM_IMP:
             return;
+
         case AM_R_D16:
         case AM_R_A16:
-            sprintf(str, "%s %s,$%04X", inst_name(inst->type), 
+            sprintf(str, "%s %s,$%04X", inst_name(inst->type),
                 rt_table[inst->reg_1], ctx->fetched_data);
             return;
+
         case AM_R:
-            sprintf(str, "%s %s", inst_name(inst->type), 
+            sprintf(str, "%s %s", inst_name(inst->type),
                 rt_table[inst->reg_1]);
             return;
-        case AM_R_R: 
-            sprintf(str, "%s %s,%s", inst_name(inst->type), 
+
+        case AM_R_R:
+            sprintf(str, "%s %s,%s", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_MR_R:
-            sprintf(str, "%s (%s),%s", inst_name(inst->type), 
+            sprintf(str, "%s (%s),%s", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_MR:
-            sprintf(str, "%s (%s)", inst_name(inst->type), 
+            sprintf(str, "%s (%s)", inst_name(inst->type),
                 rt_table[inst->reg_1]);
             return;
+
         case AM_R_MR:
-            sprintf(str, "%s %s,(%s)", inst_name(inst->type), 
+            sprintf(str, "%s %s,(%s)", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_R_D8:
         case AM_R_A8:
-            sprintf(str, "%s %s,$%02X", inst_name(inst->type), 
+            sprintf(str, "%s %s,$%02X", inst_name(inst->type),
                 rt_table[inst->reg_1], ctx->fetched_data & 0xFF);
             return;
+
         case AM_R_HLI:
-            sprintf(str, "%s %s,(%s+)", inst_name(inst->type), 
+            sprintf(str, "%s %s,(%s+)", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_R_HLD:
-            sprintf(str, "%s %s,(%s-)", inst_name(inst->type), 
+            sprintf(str, "%s %s,(%s-)", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_HLI_R:
-            sprintf(str, "%s (%s+),%s", inst_name(inst->type), 
+            sprintf(str, "%s (%s+),%s", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_HLD_R:
-            sprintf(str, "%s (%s-),%s", inst_name(inst->type), 
+            sprintf(str, "%s (%s-),%s", inst_name(inst->type),
                 rt_table[inst->reg_1], rt_table[inst->reg_2]);
             return;
+
         case AM_A8_R:
-            sprintf(str, "%s $%02X,%s", inst_name(inst->type), 
+            sprintf(str, "%s $%02X,%s", inst_name(inst->type),
                 bus_read(ctx->reg.pc - 1), rt_table[inst->reg_2]);
-           return;
+
+            return;
+
         case AM_HL_SPR:
-            sprintf(str, "%s (%s),SP+%d", inst_name(inst->type), 
+            sprintf(str, "%s (%s),SP+%d", inst_name(inst->type),
                 rt_table[inst->reg_1], ctx->fetched_data & 0xFF);
             return;
+
         case AM_D8:
-            sprintf(str, "%s $%02X", inst_name(inst->type), 
+            sprintf(str, "%s $%02X", inst_name(inst->type),
                 ctx->fetched_data & 0xFF);
             return;
+
         case AM_D16:
-            sprintf(str, "%s $%04X", inst_name(inst->type), 
+            sprintf(str, "%s $%04X", inst_name(inst->type),
                 ctx->fetched_data);
             return;
+
         case AM_MR_D8:
-            sprintf(str, "%s (%s),$%02X", inst_name(inst->type), 
+            sprintf(str, "%s (%s),$%02X", inst_name(inst->type),
                 rt_table[inst->reg_1], ctx->fetched_data & 0xFF);
             return;
+
         case AM_A16_R:
-            sprintf(str, "%s ($%04X),%s", inst_name(inst->type), 
+            sprintf(str, "%s ($%04X),%s", inst_name(inst->type),
                 ctx->fetched_data, rt_table[inst->reg_2]);
             return;
+
         default:
-            fprintf(stderr, "Err...INVALID AM: %d\n", inst->mode);
+            fprintf(stderr, "INVALID AM: %d\n", inst->mode);
             NO_IMPL
     }
 }

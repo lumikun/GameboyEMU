@@ -7,12 +7,13 @@
 #include "cart.h"
 #include "cpu.h"
 #include "ui.h"
-
+#include "timer.h"
 
 
 typedef struct {
     bool paused;
     bool running;
+    bool die;
     u64 ticks;
 } emu_context;
 

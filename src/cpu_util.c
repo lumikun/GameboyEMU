@@ -59,25 +59,25 @@ u16 cpu_read_reg(reg_type rt)
     }
 }
 
-u8 cpu_read_reg(reg_type rt)
+u8 cpu_read_reg8(reg_type rt)
 {
     switch(rt) {
         case RT_A: 
-            return ctx.regs.a;
+            return ctx.reg.a;
         case RT_F: 
-            return ctx.regs.f;
+            return ctx.reg.f;
         case RT_B: 
-            return ctx.regs.b;
+            return ctx.reg.b;
         case RT_C: 
-            return ctx.regs.c;
+            return ctx.reg.c;
         case RT_D: 
-            return ctx.regs.d;
+            return ctx.reg.d;
         case RT_E: 
-            return ctx.regs.e;
+            return ctx.reg.e;
         case RT_H: 
-            return ctx.regs.h;
+            return ctx.reg.h;
         case RT_L: 
-            return ctx.regs.l;
+            return ctx.reg.l;
         case RT_HL: {
             return bus_read(cpu_read_reg(RT_HL));
         }
@@ -91,21 +91,21 @@ void cpu_set_reg8(reg_type rt, u8 val)
 {
     switch(rt) {
         case RT_A: 
-            ctx.regs.a = val & 0xFF; break;
+            ctx.reg.a = val & 0xFF; break;
         case RT_F: 
-            ctx.regs.f = val & 0xFF; break;
+            ctx.reg.f = val & 0xFF; break;
         case RT_B: 
-            ctx.regs.b = val & 0xFF; break;
+            ctx.reg.b = val & 0xFF; break;
         case RT_C: 
-            ctx.regs.c = val & 0xFF; break;
+            ctx.reg.c = val & 0xFF; break;
         case RT_D: 
-            ctx.regs.d = val & 0xFF; break;
+            ctx.reg.d = val & 0xFF; break;
         case RT_E: 
-            ctx.regs.e = val & 0xFF; break;
+            ctx.reg.e = val & 0xFF; break;
         case RT_H: 
-            ctx.regs.h = val & 0xFF; break;
+            ctx.reg.h = val & 0xFF; break;
         case RT_L: 
-            ctx.regs.l = val & 0xFF; break;
+            ctx.reg.l = val & 0xFF; break;
         case RT_HL: 
             bus_write(cpu_read_reg(RT_HL), val); break;
         default:

@@ -41,14 +41,14 @@ void timer_tick()
         ctx.tima++;
         if (ctx.tima == 0xFF) {
             ctx.tima = ctx.tma;
-            cpu_request_unterrupt(IT_TIMER);
+            cpu_req_inter(IT_TIMER);
         }
     }
 }
 
 void timer_write(u16 addr, u8 val)
 {
-    switc(addr) {
+    switch(addr) {
         case 0xFF04:
             ctx.div = 0;
             break;
