@@ -31,6 +31,7 @@ typedef struct {
 
     u8 ie_register;
     u8 inter_flag;
+
 } cpu_context;
 
 cpu_reg *cpu_get_reg();
@@ -60,4 +61,4 @@ void cpu_set_inter_flag(u8 val);
 u8 cpu_get_ie_register();
 void cpu_set_ie_register(u8 n);
 
-void cpu_handle_inter(cpu_context *ctx);
+void inst_to_str(cpu_context *ctx, char *str);

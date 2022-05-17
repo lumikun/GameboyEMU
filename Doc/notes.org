@@ -165,6 +165,9 @@ Hardware virtualization is the virtualization of computers as complete hardware 
   + *0xFF00 - 0xFF7F* : I/O Registers
   + *0xFF80 - 0xFFFE* : Zero Page
 - *GFX*: PPU, LCD 160x144px 4 shades of gray.
+*** Specs Table
+TODO write specs table from https://gbdev.io/pandocs/Specifications.html
+
 ** Hardware access
 The SM83 keeps an 8-bit data bus and a 16-bit address bus, so up to 64 KB of memory can be addressed. The memory map is composed of:
 - Cartridge space.
@@ -238,6 +241,30 @@ Cartridges can include a real-time clock and an external batter along with SRAM 
 For the first time, games can communicate with other consoles with the use of a Game Boy Link cable, which provides multiplayer functionality. The interface uses a very primitive type of serial connection.
 ** Anti-piracy
 This console contains a 256 Byte ROM stacked in the CPU that is used to bootstrap the cartridge's ROM. It doesn't run the game right away however, it first executes a series of checks that prevent the execution of unauthorised cartridges and also makes sure the cartride is correctly inserted.
+
+To be able to pass these checks, games had to include a copy of Nintendo's logo (in the form of titles) in its ROM header, this way Nintendo could make use of Copyright and Trademark laws to control the distribution, _Clever huh_? The Gameboy ROM also embeds a copy of the logo to be able to compare it.
+
+That being said, the boot process is as follows:
+ + After the console is switched on, the CPU starts reading at address *0x00* (Gameboy's ROM location).
+ + RAM and Sound are initialised.
+ + Nintendo logo is copied from the cartridge ROM to Display RAM, then it's drawn at the top edge of the screen. If there is no cartridge inserted, the logo will contain garbage tiles. The same may happen if it's badly inserted.
+ + The logo is scrolled down and the famous /po-ling/ sound is played.
+ + The game's Nintendo logo is matched against the one stored in the console's ROM, if the check fails the console freezes.
+ + A quick checksum is done on the cartridge's ROM header to make sure the cartridge is correctly insterted, if the check fails the console freezes.
+ + The console's ROM is removed from the memory map.
+ + CPU starts executing the game.
+
+Interestingly enough the /Nintendo/ logo diplayed on the screen is not cleared from VRAM, so games can apply some animation and effects to introduce their own logo.
+
+More anti-piracy measures can be implemented inside games, like checking the SRAM size (it's normally bigger in Bootlegs) and checksumming the ROM at random points of the game.
+
+*** header checksum
+#+begin_src
+x = 0
+i = $0134
+while i <= $014C
+    x = x - [i] - 1
+#+end_src
 * Thoughts on the whole work Diary.
 ** Little issues.
 Working on Mac OS seams that Clang is a bit picky with functions and causes issues when compiling and screams about duplicate subroutines. Might need to test this on gcc if that also has issues. Altho i imaigne it might be fine. But will check tomorow.

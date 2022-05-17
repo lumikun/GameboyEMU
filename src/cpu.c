@@ -3,7 +3,6 @@
 #include "interrupt.h"
 #include "dbg.h"
 #include "timer.h"
-#include "instr.c"
 #include "include.h"
 
 cpu_context ctx = {0};
