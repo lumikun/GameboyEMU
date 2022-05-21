@@ -25,10 +25,14 @@ void ui_init()
     printf("SDL INIT\n");
     TTF_Init();
     printf("TTF INIT\n");
-    
-    SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &sdlWindow, &sdlRenderer);
-    SDL_CreateWindowAndRenderer(16 * 8 * scale, 32 * 8 * scale, 0, &sdlDbgWindow, &sdlDbgRenderer);
 
+    // EMULATOR WINDOW
+    SDL_CreateWindowAndRenderer(SCREEN_WIDTH, SCREEN_HEIGHT, 0, &sdlWindow, &sdlRenderer);
+    screen = SDL_CreateRGBSurface(0, SCREEN_WIDTH, SCREEN_HEIGHT, 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
+    sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
+
+    // DEBUG WINDOW
+    SDL_CreateWindowAndRenderer(16 * 8 * scale, 32 * 8 * scale, 0, &sdlDbgWindow, &sdlDbgRenderer);
     DbgScreen = SDL_CreateRGBSurface(0, (16 * 8 * scale) + (16 * scale), (32 * 8 * scale) + (64 * scale), 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
     sdlDbgTexture = SDL_CreateTexture(sdlDbgRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, (16 * 8 * scale) + (16 * scale), (32 * 8 * scale) + (64 * scale));
 
@@ -98,6 +102,25 @@ void update_dbg_win()
 
 void ui_update()
 {
+    SDL_Rect rc;
+    rc.x = rc.y = 0;
+    rc.w = rc.h = 2048;
+    u32 *vbuf = ppu_get_ctx()->vbuffer;
+
+    for (int y = 0; y < YRES; y++) {
+        for (int x = 0; x < XRES; x++) {
+            rc.x = x * scale;
+            rc.y = y * scale;
+            rc.w = scale;
+            rc.h = scale;
+            SDL_FillRect(screen, &rc, vbuf[x + (y * XRES)]);
+        }
+    }
+    SDL_UpdateTexture(sdlTexture, NULL, screen->pixels, screen->pitch);
+    SDL_RenderClear(sdlRenderer);
+    SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
+    SDL_RenderPresent(sdlRenderer);
+
     update_dbg_win();
 }
 

@@ -24,10 +24,13 @@ int main(int argc, char **argv)
 		return -1;
 	}
 
+	u32 prev_frame = 0;
 	while (!ctx.die) {
 		usleep(1000);
 		ui_handle_event();
-		ui_update();
+		if (prev_frame != ppu_get_ctx()->current_frame)
+			ui_update();
+		prev_frame = ppu_get_ctx()->current_frame;
 	}
 	return 0;
 }
@@ -51,7 +54,7 @@ void *cpu_run(void *p)
 			printf("Err... CPU Stoped\n");
 			return 0;
 		}
-		ctx.ticks++;
+		//ctx.ticks++;
 	}
 	return 0;
 }

@@ -5,6 +5,9 @@
 
 static ppu_context ctx;
 
+void pipeline_fifo_reset();
+void pipeline_process();
+
 ppu_context *ppu_get_ctx()
 {
     return &ctx;
@@ -14,6 +17,13 @@ void ppu_init() {
     ctx.current_frame = 0;
     ctx.line_tick = 0;
     ctx.vbuffer = malloc(YRES * XRES * sizeof(32));
+
+    ctx.pfc.line_x = 0;
+    ctx.pfc.pushed_x = 0;
+    ctx.pfc.fetch_x = 0;
+    ctx.pfc.pixel_fifo.size = 0;
+    ctx.pfc.pixel_fifo.head = ctx.pfc.pixel_fifo.tail = NULL;
+    ctx.pfc.cur_fetch_state = FS_TILE;
 
     lcd_init();
     LCDS_MODE_SET(MODE_OAM);
