@@ -27,13 +27,16 @@ int main(int argc, char **argv)
 	while (!ctx.die) {
 		usleep(1000);
 		ui_handle_event();
+		ui_update();
 	}
 	return 0;
 }
 
 void *cpu_run(void *p)
 {
+	timer_init();
     cpu_init();
+
     ctx.running = true;
 	ctx.paused = false;
 	ctx.ticks = 0;
@@ -52,19 +55,17 @@ void *cpu_run(void *p)
 	return 0;
 }
 
-void delay(u32 ms) {
-	SDL_Delay(ms);
-}
-
 emu_context *emu_get_context() {
 	return &ctx;
 }
 
 void emu_cycles(int cpu_cycles)
 {
-	int n = cpu_cycles * 4;
-	for (int i = 0; i < n; i++) {
-		ctx.ticks++;
-		timer_tick();
+	for (int i = 0; i < cpu_cycles; i++) {
+		for (int j = 0; j < 4; j++) {
+			ctx.ticks++;
+			timer_tick();
+		}
 	}
+	dma_tick();
 }

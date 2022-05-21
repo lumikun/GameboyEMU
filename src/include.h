@@ -8,7 +8,8 @@
 #include "cpu.h"
 #include "ui.h"
 #include "timer.h"
-
+#include "dma.h"
+#include "bus.h"
 
 typedef struct {
     bool paused;

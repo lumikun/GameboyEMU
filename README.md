@@ -23,12 +23,12 @@ Priekš `Windows` sistēmām izmantots [`Visual Studio Community 2019`](https://
 # TODO Plāns 
 -   [x] Izveidot primitivue sistēmu kas var ielādēt ROM failus. 
 -   [x] Izveidot pamata Systemu.
--   [ ] meson.build vajag atsevišķu dep tree priekš Windows.
+-   [x] meson.build vajag atsevišķu dep tree priekš Windows.
 -   [ ] Veidot pierakstus un dokumentāciju.
--   [ ] Izveidot CPU Emulāciju. 
+-   [x] Izveidot CPU Emulāciju. 
 -   [ ] Izveidot emulātorām `upscale` funkcionalitāti.
 -   [ ] Izveidot konfigurācījas sistēmu.
-
+-   [ ] Vajag refakturet kodu
 
 # Izmantotā informācīja priekš Izstrādes.
 -   Informācīja par [Memory Map](http://gameboy.mongenel.com/dmg/asmmemmap.html)
