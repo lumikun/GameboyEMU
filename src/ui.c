@@ -41,6 +41,11 @@ void delay(u32 ms)
     SDL_Delay(ms);
 }
 
+u32 get_ticks()
+{
+    return SDL_GetTicks();
+}
+
 void display_tile(SDL_Surface *surface, u16 startLoc, u16 tileN, int x, int y)
 {
     SDL_Rect rc;

@@ -36,6 +36,7 @@ static void cpu_execute()
     IN_PROC proc = inst_get_processor(ctx.cur_inst->type);
 
     if (!proc) {
+        printf("err... Fail\n");
         NO_IMPL
     }
     proc(&ctx);

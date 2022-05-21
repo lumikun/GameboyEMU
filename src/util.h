@@ -15,5 +15,6 @@ typedef uint64_t u64;
 #define BETWEEN(a, b, c) ((a >= b) && (a <= c))
 
 void delay(u32 ms);
+u32 get_ticks();
 
 #define NO_IMPL { fprintf(stderr, "Nav izveidots\n"); exit(-5); }

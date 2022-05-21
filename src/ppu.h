@@ -3,6 +3,11 @@
 #include "util.h"
 #include "include.h"
 
+static const int LINES_PER_FRAME = 154;
+static const int TICKS_PER_LINE = 456;
+static const int YRES = 144;
+static const int XRES = 160;
+
 typedef struct {
     u8 y;
     u8 x;
@@ -19,6 +24,10 @@ typedef struct {
 typedef struct {
     oam_entry oam_ram[40];
     u8 vram[0x2000];
+
+    u32 current_frame;
+    u32 line_tick;
+    u32 *vbuffer;
 } ppu_context;
 
 void ppu_init();
@@ -29,3 +38,5 @@ u8 ppu_oam_read(u16 addr);
 
 void ppu_vram_write(u16 addr, u8 val);
 u8 ppu_vram_read(u16 addr);
+
+ppu_context *ppu_get_ctx();

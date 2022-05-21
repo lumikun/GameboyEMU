@@ -10,6 +10,7 @@
 #include "timer.h"
 #include "dma.h"
 #include "bus.h"
+#include "ppu.h"
 
 typedef struct {
     bool paused;
