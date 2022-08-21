@@ -11,7 +11,7 @@ typedef uint32_t u32;
 typedef uint64_t u64;
 
 #define BIT(a, n) ((a & (1 << n)) ? 1 : 0)
-#define BIT_SET(a, n, on) { if (on) a |= (1 << n); else a &= ~(1 << n); }
+#define BIT_SET(a, n, on) { if (on) a |= (1 << n); else a &= ~(1 << n);}
 #define BETWEEN(a, b, c) ((a >= b) && (a <= c))
 
 void delay(u32 ms);

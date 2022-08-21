@@ -64,13 +64,15 @@ void lcd_write(u16 addr, u8 val)
     u8 *p = (u8 *)&ctx;
     p[offset] = val;
 
-    if (offset == 6)
+    if (offset == 6) {
         dma_start(val);
-    
-    if (addr == 0xFF47)
+    }
+
+    if (addr == 0xFF47) {
         update_palette(val, 0);
-    else if (addr == 0xFF48)
+    } else if (addr == 0xFF48) {
         update_palette(val & 0b11111100, 1);
-    else if (addr == 0xFF49)
+    } else if (addr == 0xFF49) {
         update_palette(val & 0b11111100, 1);
+    }
 }

@@ -67,7 +67,7 @@ void bus_write(u16 addr, u8 val)
         // unusable reserved
     } else if (addr < 0xFF80) {   // IO Regisetrs
         io_write(addr, val);
-    } else if (addr == 0xFFFF) {
+    } else if (addr == 0xFFFF) {  // Set REGISTER CPU
         cpu_set_ie_register(val);
     } else {
         hram_write(addr, val);

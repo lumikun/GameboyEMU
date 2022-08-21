@@ -1,5 +1,8 @@
 #include "ui.h"
 #include "include.h"
+#include "bus.h"
+#include "ppu.h"
+#include "input.h"
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_ttf.h>
 
@@ -32,12 +35,12 @@ void ui_init()
     sdlTexture = SDL_CreateTexture(sdlRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, SCREEN_WIDTH, SCREEN_HEIGHT);
 
     // DEBUG WINDOW
-    SDL_CreateWindowAndRenderer(16 * 8 * scale, 32 * 8 * scale, 0, &sdlDbgWindow, &sdlDbgRenderer);
+    /*SDL_CreateWindowAndRenderer(16 * 8 * scale, 32 * 8 * scale, 0, &sdlDbgWindow, &sdlDbgRenderer);
     DbgScreen = SDL_CreateRGBSurface(0, (16 * 8 * scale) + (16 * scale), (32 * 8 * scale) + (64 * scale), 32, 0x00FF0000, 0x0000FF00, 0x000000FF, 0xFF000000);
     sdlDbgTexture = SDL_CreateTexture(sdlDbgRenderer, SDL_PIXELFORMAT_ARGB8888, SDL_TEXTUREACCESS_STREAMING, (16 * 8 * scale) + (16 * scale), (32 * 8 * scale) + (64 * scale));
-
+*/
     SDL_GetWindowPosition(sdlWindow, &x, &y);
-    SDL_SetWindowPosition(sdlDbgWindow, x+SCREEN_WIDTH + 10, y);
+  //  SDL_SetWindowPosition(sdlDbgWindow, x+SCREEN_WIDTH + 10, y);
 }
 
 void delay(u32 ms)
@@ -100,34 +103,57 @@ void update_dbg_win()
     SDL_RenderPresent(sdlDbgRenderer);
 }
 
-void ui_update()
+void ui_update() 
 {
     SDL_Rect rc;
     rc.x = rc.y = 0;
     rc.w = rc.h = 2048;
-    u32 *vbuf = ppu_get_ctx()->vbuffer;
 
-    for (int y = 0; y < YRES; y++) {
+    u32 *video_buffer = ppu_get_ctx()->vbuffer;
+
+    for (int line_num = 0; line_num < YRES; line_num++) {
         for (int x = 0; x < XRES; x++) {
             rc.x = x * scale;
-            rc.y = y * scale;
+            rc.y = line_num * scale;
             rc.w = scale;
             rc.h = scale;
-            SDL_FillRect(screen, &rc, vbuf[x + (y * XRES)]);
+
+            SDL_FillRect(screen, &rc, video_buffer[x + (line_num * XRES)]);
         }
     }
+
     SDL_UpdateTexture(sdlTexture, NULL, screen->pixels, screen->pitch);
     SDL_RenderClear(sdlRenderer);
     SDL_RenderCopy(sdlRenderer, sdlTexture, NULL, NULL);
     SDL_RenderPresent(sdlRenderer);
 
-    update_dbg_win();
+    //update_dbg_win();
+}
+
+void ui_on_key(bool down, u32 key_code)
+{
+    switch(key_code) {
+        case SDLK_z: input_get_state()->b = down; break;
+        case SDLK_x: input_get_state()->a = down; break;
+        case SDLK_RETURN: input_get_state()->start = down; break;
+        case SDLK_TAB: input_get_state()->select = down; break;
+        case SDLK_UP: input_get_state()->up = down; break;
+        case SDLK_DOWN: input_get_state()->down = down; break;
+        case SDLK_LEFT: input_get_state()->left = down; break;
+        case SDLK_RIGHT: input_get_state()->right = down; break;
+    }
 }
 
 void ui_handle_event()
 {
     SDL_Event e;
     while (SDL_PollEvent(&e) > 0) {
+        if (e.type == SDL_KEYDOWN) {
+            ui_on_key(true, e.key.keysym.sym);
+        }
+        if (e.type == SDL_KEYUP) {
+            ui_on_key(false, e.key.keysym.sym);
+        }        
         if (e.type == SDL_WINDOWEVENT && e.window.event == SDL_WINDOWEVENT_CLOSE) {
             emu_get_context()->die = true;
         }

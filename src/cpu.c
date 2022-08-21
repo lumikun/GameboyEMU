@@ -5,6 +5,8 @@
 #include "timer.h"
 #include "include.h"
 
+#define CPU_DEBUG 0
+
 cpu_context ctx = {0};
 
 /* Procesora Uzsaksanas funkcija. */
@@ -12,7 +14,7 @@ cpu_context ctx = {0};
 void cpu_init()
 {
     ctx.reg.pc = 0x100;
-    ctx.reg.sp = 0xFFFF;
+    ctx.reg.sp = 0xFFFE;
     *((short *)&ctx.reg.a) = 0xB001;
     *((short *)&ctx.reg.b) = 0x1300;
     *((short *)&ctx.reg.d) = 0xD800;
@@ -51,6 +53,7 @@ bool cpu_step()
         emu_cycles(1);
         cpu_fetch_data();
     // cleanup TODO!
+#if CPU_DEBUG == 1
         char flags[16];
         sprintf(flags, "%c%c%c%c", 
             ctx.reg.f & (1 << 7) ? 'Z' : '-',
@@ -67,7 +70,7 @@ bool cpu_step()
             pc, inst, ctx.cur_opcode,
             bus_read(pc + 1), bus_read(pc + 2), ctx.reg.a, flags, ctx.reg.b, ctx.reg.c,
             ctx.reg.d, ctx.reg.e, ctx.reg.h, ctx.reg.l);
-
+#endif
         if (ctx.cur_inst == NULL) {
             printf("Err...Unknown Instruction! %02X\n", ctx.cur_opcode);
             exit(-7);

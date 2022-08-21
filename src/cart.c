@@ -1,10 +1,10 @@
 #include "cart.h"
 
 typedef struct {
-    char fn[1024];
-    u32 rom_size;
-    u8 *rom_data;
-    rom_header *header;
+    char fn[1024];      // Faila nosaukums
+    u32 rom_size;       // ROM faila izmērs
+    u8 *rom_data;       // Paši ROM faila dati
+    rom_header *header; // Hedera informācīja
 } cart_context;
 
 static cart_context ctx;

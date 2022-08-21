@@ -28,8 +28,11 @@ int main(int argc, char **argv)
 	while (!ctx.die) {
 		usleep(1000);
 		ui_handle_event();
-		if (prev_frame != ppu_get_ctx()->current_frame)
+		
+		if (prev_frame != ppu_get_ctx()->current_frame) {
 			ui_update();
+		} 
+		ui_update();
 		prev_frame = ppu_get_ctx()->current_frame;
 	}
 	return 0;
@@ -71,6 +74,6 @@ void emu_cycles(int cpu_cycles)
 			timer_tick();
 			ppu_tick();
 		}
+		dma_tick();
 	}
-	dma_tick();
 }

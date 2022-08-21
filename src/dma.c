@@ -13,6 +13,7 @@ static dma_context ctx;
 
 void dma_start(u8 start)
 {
+    printf("DMA STARTING\n");
     ctx.active = true;
     ctx.byte = 0;
     ctx.start_delay = 2;
@@ -21,8 +22,9 @@ void dma_start(u8 start)
 
 void dma_tick()
 {
-    if (!ctx.active)
+    if (!ctx.active) {
         return;
+    }
     if (ctx.start_delay) {
         ctx.start_delay--;
         return;
@@ -30,10 +32,10 @@ void dma_tick()
     ppu_oam_write(ctx.byte, bus_read((ctx.val * 0x100) + ctx.byte));
     ctx.byte++;
     ctx.active = ctx.byte < 0xA0;
-    if (!ctx.active) {
+    /* if (!ctx.active) {
         printf("DMA FINISHED!\n");
         sleep(2);
-    }
+    } */ 
 }
 
 bool dma_transfering()
